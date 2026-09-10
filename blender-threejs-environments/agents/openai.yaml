@@ -1,0 +1,4 @@
+interface:
+  display_name: "Blender + Three.js Environments"
+  short_description: "Coordinate reference-driven game environment work"
+  default_prompt: "Use $blender-threejs-environments to complete the relevant Blender and Three.js workflow for this project."

@@ -1,0 +1,17 @@
+{
+  "status": "refreshed",
+  "sha256": "ce96cc5cb2ad444a97b0dc88508dc85af4458edb5b1a72326cd2269c7f1e3fe2",
+  "size": 128,
+  "newManualPixels": 154,
+  "manualPixels": 154,
+  "retainedEditedPixels": 154,
+  "profileRaisedMeters": 0.28,
+  "drainBefore": [
+    5.8,
+    2.9
+  ],
+  "drainAfter": [
+    3.7,
+    2.4
+  ]
+}

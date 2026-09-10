@@ -1,0 +1,4 @@
+interface:
+  display_name: "Blender to Three.js Assets"
+  short_description: "Preserve and validate exported game scene assets"
+  default_prompt: "Use $blender-threejs-asset-pipeline to complete the relevant Blender and Three.js workflow for this project."

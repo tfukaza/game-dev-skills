@@ -1,0 +1,29 @@
+{
+  "size": 32,
+  "device": "CPU",
+  "input": "constant linear image values; transforms still vary over positive/negative cells",
+  "presets": {
+    "natural": {
+      "maxError": {
+        "color": 1.2594156539869061e-07,
+        "normal": 3.552136150775098e-07,
+        "orm": 2.0742416384500473e-07
+      },
+      "sharedImageNodes": 9,
+      "groupReuse": true
+    },
+    "courses": {
+      "maxError": {
+        "color": 1.676228192915019e-07,
+        "normal": 4.892232669528873e-07,
+        "orm": 1.478195190696141e-07
+      },
+      "sharedImageNodes": 9,
+      "groupReuse": true
+    }
+  },
+  "sampledCoordinates": {
+    "maxDeviationFromPixelCenter": 0.00015020370483398438
+  },
+  "passed": true
+}

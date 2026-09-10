@@ -1,0 +1,4 @@
+interface:
+  display_name: "Game Layout & Ground"
+  short_description: "Build aligned, traversable layouts from references"
+  default_prompt: "Use $blender-threejs-layout to complete the relevant Blender and Three.js workflow for this project."

@@ -1,0 +1,1 @@
+{"kind":"ground","seed":51,"worldMeters":[8,6],"walls":[[[0,0],[0,6]],[[0,6],[8,6]],[[8,6],[8,0]]],"spreadMeters":1.4,"clearLane":{"segment":[[4,0],[4,6]],"radiusMeters":1.1,"strength":0.6}}

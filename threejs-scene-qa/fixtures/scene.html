@@ -1,0 +1,81 @@
+<!doctype html>
+<meta charset="utf-8"><title>Portable scene QA fixture</title>
+<style>html,body{margin:0;background:#20242a}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"/three/build/three.module.js","three/addons/":"/three/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import {Octree} from 'three/addons/math/Octree.js';
+import {Capsule} from 'three/addons/math/Capsule.js';
+import {captureViews,landmarkErrors} from '/scripts/scene-probes.mjs';
+import {recordFrames,summarizeFrames} from '/performance/benchmark.mjs';
+const renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
+renderer.setSize(640,480);renderer.setPixelRatio(1);renderer.shadowMap.enabled=true;
+document.body.append(renderer.domElement);
+const scene=new THREE.Scene();scene.background=new THREE.Color('#a1b3bd');
+const camera=new THREE.PerspectiveCamera(48,640/480,.1,100);
+const ambient=new THREE.HemisphereLight(0xddeeff,0x493c26,1.5);scene.add(ambient);
+const sun=new THREE.DirectionalLight(0xfff0d9,3);sun.position.set(5,10,6);sun.castShadow=true;scene.add(sun);
+const floorMat=new THREE.MeshStandardMaterial({color:0x9b9280,roughness:.9});
+const wallMat=new THREE.MeshStandardMaterial({color:0xc6b69b,roughness:.85});
+const tealMat=new THREE.MeshStandardMaterial({color:0x4c898d,roughness:.8});
+const neutral=new THREE.MeshStandardMaterial({color:0xaaaaaa,roughness:.8});
+const meshes=[], collision=new THREE.Group();scene.add(collision);
+function box(w,h,d,x,y,z,mat=wallMat,collide=true) {
+ const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);m.castShadow=m.receiveShadow=true;
+ (collide?collision:scene).add(m);meshes.push(m);return m;
+}
+box(14,.2,14,0,-.1,0,floorMat);
+box(10,.4,2,0,2.8,0);
+box(.4,3,2,-5,1.5,0);box(.4,3,2,5,1.5,0);
+// Broad inclined approach at the back, from z=6/y=0 to z=1/y=3.
+const geo=new THREE.BufferGeometry();
+geo.setAttribute('position',new THREE.Float32BufferAttribute([-2,0,6,2,0,6,-2,3,1,2,3,1],3));
+geo.setIndex([0,1,2,2,1,3]);geo.computeVertexNormals();
+const ramp=new THREE.Mesh(geo,floorMat);ramp.receiveShadow=true;collision.add(ramp);meshes.push(ramp);
+for(const [i,x] of [-2,0,2].entries()) {
+ const prop=box(.8,.8,.8,x,.4,-3,wallMat);prop.rotation.y=i*.17;
+ const cap=box(.86,.09,.86,x,.845,-3,tealMat,false);cap.rotation.y=prop.rotation.y;
+}
+scene.updateMatrixWorld(true);
+const octree=new Octree().fromGraphNode(collision);
+function capsuleAt(x,z,bottom=0) {return new Capsule(new THREE.Vector3(x,bottom+.35,z),new THREE.Vector3(x,bottom+1.35,z),.35);}
+function settle(c) {for(let i=0;i<5;i++){const hit=octree.capsuleIntersect(c);if(hit)c.translate(hit.normal.multiplyScalar(hit.depth));}return c;}
+function traversal() {
+ const lower=capsuleAt(0,-2,.02);
+ let maxRise=0;
+ for(let i=0;i<80;i++){lower.translate(new THREE.Vector3(0,-.003,.05));settle(lower);maxRise=Math.max(maxRise,lower.start.y-.35);}
+ const upper=settle(capsuleAt(0,0,2.99));
+ const ceiling=capsuleAt(0,0,1.3), hit=octree.capsuleIntersect(ceiling);
+ const rampHeights=[];
+ for(const z of [5,4,3,2]) {
+  const ray=new THREE.Raycaster(new THREE.Vector3(0,8,z),new THREE.Vector3(0,-1,0));
+  rampHeights.push(ray.intersectObject(ramp)[0]?.point.y);
+ }
+ return {lowerEnd:lower.end.toArray(),maxRise,upperBottom:upper.start.y-.35,
+  ceilingContact:!!hit,ceilingNormalY:hit?.normal.y,
+  rampHeights,pass:Math.abs(lower.end.z-2)<.001&&maxRise<.1&&Math.abs(upper.start.y-.35-3)<.02&&!!hit&&hit.normal.y<0&&rampHeights.every((h,i)=>Math.abs(h-(i+1)*.6)<1e-5)};
+}
+const originals=meshes.map(m=>m.material);
+const views=[{id:'overview',position:[11,9,12],target:[0,1,0]},{id:'underpass',position:[0,1.6,-5],target:[0,1.6,3]}];
+function setView(v){camera.position.fromArray(v.position);camera.lookAt(...v.target);camera.updateMatrixWorld();}
+setView(views[0]);
+function saveState(){return {position:camera.position.toArray(),quaternion:camera.quaternion.toArray(),shadows:renderer.shadowMap.enabled,materials:meshes.map(m=>m.material)};}
+function restoreState(s){camera.position.fromArray(s.position);camera.quaternion.fromArray(s.quaternion);camera.updateMatrixWorld();renderer.shadowMap.enabled=s.shadows;meshes.forEach((m,i)=>m.material=s.materials[i]);}
+const adapter={saveState,restoreState,setView,
+ setMode(mode){if(mode==='neutral')meshes.forEach(m=>m.material=neutral);else if(mode==='no-shadows')renderer.shadowMap.enabled=false;else if(mode!=='production')throw Error('Unsupported mode '+mode);},
+ ready:()=>renderer.compileAsync(scene,camera),render:()=>renderer.render(scene,camera),
+ capture:()=>({png:renderer.domElement.toDataURL('image/png'),triangles:renderer.info.render.triangles,draws:renderer.info.render.calls})};
+let active=true;function loop(){if(!active)return;renderer.render(scene,camera);requestAnimationFrame(loop);}loop();
+window.fixture={
+ async run(){
+  const route=traversal();
+  const shots=await captureViews(adapter,{views,modes:['production','neutral','no-shadows']});
+  const restored=originals.every((m,i)=>meshes[i].material===m)&&camera.position.distanceTo(new THREE.Vector3(...views[0].position))<1e-9;
+  const timestamps=await recordFrames({durationMs:250});
+  return {route,restored,shots,frames:summarizeFrames(timestamps),renderer:renderer.getContext().constructor.name,
+   limitations:'Tiny local fixture; not target-device performance, real project traversal, typography or final game acceptance'};
+ },
+ dispose(){active=false;meshes.forEach(m=>m.geometry.dispose());new Set([...originals,neutral]).forEach(m=>m.dispose());renderer.dispose();}
+};
+window.fixtureReady=true;
+</script>

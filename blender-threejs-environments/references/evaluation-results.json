@@ -1,0 +1,49 @@
+{
+  "date": "2026-09-10",
+  "skills": 9,
+  "structuralValidation": "9 passed",
+  "unitTests": {
+    "layout": 6,
+    "props": 7,
+    "assetPipeline": 9,
+    "gi": 18,
+    "contextPaint": 6,
+    "performance": 7,
+    "sceneQa": 8,
+    "total": 61
+  },
+  "materialChecks": {
+    "joinProbes": 726,
+    "normalBasisCases": 36,
+    "independentNormalCases": 70,
+    "blenderOutputs": 6,
+    "webglCases": 18
+  },
+  "actualRuntime": {
+    "cyclesCalibration": "passed",
+    "linearExrAndPackedReloadMaxError": 0,
+    "octreeCapsuleAndRamp": "passed",
+    "diagnosticCaptures": 6,
+    "browserPageErrors": 0
+  },
+  "independentFixes": [
+    "Final-callback cancellation in capture and ABBA",
+    "Drain pending resources despite disposal errors",
+    "Immutable historical resource snapshots",
+    "Mirrored guide-normal convention",
+    "Canonical image-generated lettering across skill boundaries",
+    "Separate generated/manual paint with drain-context refresh"
+  ],
+  "paintRefreshReview": {
+    "refreshes": 2,
+    "retainedPixels": 221,
+    "pixelError": 0,
+    "drainAnchorErrorMetersLessThan": 0.005
+  },
+  "limitations": [
+    "Synthetic profile classifications are not device measurements",
+    "Flat mask examples are not a complete PBR scene",
+    "No new image-generation job or complete multi-angle art production performed",
+    "Destination application visuals, inputs and hardware still require application-specific acceptance"
+  ]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Three.js Performance"
+  short_description: "Measure and optimize interactive 3D performance"
+  default_prompt: "Use $threejs-performance to complete the relevant Blender and Three.js workflow for this project."

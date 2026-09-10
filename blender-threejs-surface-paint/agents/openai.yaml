@@ -1,0 +1,4 @@
+interface:
+  display_name: "Environmental Surface Painting"
+  short_description: "Paint contextual wear, deposits, and surface markings"
+  default_prompt: "Use $blender-threejs-surface-paint to complete the relevant Blender and Three.js workflow for this project."

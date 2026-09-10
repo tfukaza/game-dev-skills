@@ -1,0 +1,377 @@
+{
+  "fixturesAreSynthetic": true,
+  "proposals": {
+    "copper": [
+      {
+        "variant": "A",
+        "conditions": {
+          "viewport": [
+            1000,
+            700
+          ],
+          "drawingBuffer": [
+            1500,
+            1050
+          ],
+          "camera": "courtyard-fixed",
+          "preset": "overcast",
+          "device": "synthetic-trace",
+          "sceneRevision": "courtyard-r3"
+        },
+        "visualPassed": true,
+        "stats": {
+          "medianMs": 20
+        }
+      },
+      {
+        "variant": "B",
+        "conditions": {
+          "viewport": [
+            1000,
+            700
+          ],
+          "drawingBuffer": [
+            1500,
+            1050
+          ],
+          "camera": "courtyard-fixed",
+          "preset": "overcast",
+          "device": "synthetic-trace",
+          "sceneRevision": "courtyard-r3"
+        },
+        "visualPassed": true,
+        "stats": {
+          "medianMs": 16
+        }
+      },
+      {
+        "variant": "B",
+        "conditions": {
+          "viewport": [
+            1000,
+            700
+          ],
+          "drawingBuffer": [
+            1500,
+            1050
+          ],
+          "camera": "courtyard-fixed",
+          "preset": "overcast",
+          "device": "synthetic-trace",
+          "sceneRevision": "courtyard-r3"
+        },
+        "visualPassed": true,
+        "stats": {
+          "medianMs": 24
+        }
+      },
+      {
+        "variant": "A",
+        "conditions": {
+          "viewport": [
+            1000,
+            700
+          ],
+          "drawingBuffer": [
+            1500,
+            1050
+          ],
+          "camera": "courtyard-fixed",
+          "preset": "overcast",
+          "device": "synthetic-trace",
+          "sceneRevision": "courtyard-r3"
+        },
+        "visualPassed": true,
+        "stats": {
+          "medianMs": 20
+        }
+      }
+    ],
+    "silver": [
+      {
+        "variant": "A",
+        "conditions": {
+          "viewport": [
+            1000,
+            700
+          ],
+          "drawingBuffer": [
+            1500,
+            1050
+          ],
+          "camera": "courtyard-fixed",
+          "preset": "overcast",
+          "device": "synthetic-trace",
+          "sceneRevision": "courtyard-r3"
+        },
+        "visualPassed": true,
+        "stats": {
+          "medianMs": 20
+        }
+      },
+      {
+        "variant": "B",
+        "conditions": {
+          "viewport": [
+            1000,
+            700
+          ],
+          "drawingBuffer": [
+            1000,
+            700
+          ],
+          "camera": "courtyard-fixed",
+          "preset": "overcast",
+          "device": "synthetic-trace",
+          "sceneRevision": "courtyard-r3"
+        },
+        "visualPassed": true,
+        "stats": {
+          "medianMs": 14
+        }
+      },
+      {
+        "variant": "B",
+        "conditions": {
+          "viewport": [
+            1000,
+            700
+          ],
+          "drawingBuffer": [
+            1000,
+            700
+          ],
+          "camera": "courtyard-fixed",
+          "preset": "overcast",
+          "device": "synthetic-trace",
+          "sceneRevision": "courtyard-r3"
+        },
+        "visualPassed": true,
+        "stats": {
+          "medianMs": 14
+        }
+      },
+      {
+        "variant": "A",
+        "conditions": {
+          "viewport": [
+            1000,
+            700
+          ],
+          "drawingBuffer": [
+            1500,
+            1050
+          ],
+          "camera": "courtyard-fixed",
+          "preset": "overcast",
+          "device": "synthetic-trace",
+          "sceneRevision": "courtyard-r3"
+        },
+        "visualPassed": true,
+        "stats": {
+          "medianMs": 20
+        }
+      }
+    ],
+    "gold": [
+      {
+        "variant": "A",
+        "conditions": {
+          "viewport": [
+            1000,
+            700
+          ],
+          "drawingBuffer": [
+            1500,
+            1050
+          ],
+          "camera": "courtyard-fixed",
+          "preset": "overcast",
+          "device": "synthetic-trace",
+          "sceneRevision": "courtyard-r3"
+        },
+        "visualPassed": true,
+        "stats": {
+          "medianMs": 20
+        }
+      },
+      {
+        "variant": "B",
+        "conditions": {
+          "viewport": [
+            1000,
+            700
+          ],
+          "drawingBuffer": [
+            1500,
+            1050
+          ],
+          "camera": "courtyard-fixed",
+          "preset": "overcast",
+          "device": "synthetic-trace",
+          "sceneRevision": "courtyard-r3"
+        },
+        "visualPassed": true,
+        "stats": {
+          "medianMs": 16
+        }
+      },
+      {
+        "variant": "B",
+        "conditions": {
+          "viewport": [
+            1000,
+            700
+          ],
+          "drawingBuffer": [
+            1500,
+            1050
+          ],
+          "camera": "courtyard-fixed",
+          "preset": "overcast",
+          "device": "synthetic-trace",
+          "sceneRevision": "courtyard-r3"
+        },
+        "visualPassed": false,
+        "stats": {
+          "medianMs": 16
+        }
+      },
+      {
+        "variant": "A",
+        "conditions": {
+          "viewport": [
+            1000,
+            700
+          ],
+          "drawingBuffer": [
+            1500,
+            1050
+          ],
+          "camera": "courtyard-fixed",
+          "preset": "overcast",
+          "device": "synthetic-trace",
+          "sceneRevision": "courtyard-r3"
+        },
+        "visualPassed": true,
+        "stats": {
+          "medianMs": 20
+        }
+      }
+    ],
+    "iron": [
+      {
+        "variant": "A",
+        "conditions": {
+          "viewport": [
+            1000,
+            700
+          ],
+          "drawingBuffer": [
+            1500,
+            1050
+          ],
+          "camera": "courtyard-fixed",
+          "preset": "overcast",
+          "device": "synthetic-trace",
+          "sceneRevision": "courtyard-r3"
+        },
+        "visualPassed": true,
+        "stats": {
+          "medianMs": 20
+        }
+      },
+      {
+        "variant": "B",
+        "conditions": {
+          "viewport": [
+            1000,
+            700
+          ],
+          "drawingBuffer": [
+            1500,
+            1050
+          ],
+          "camera": "courtyard-fixed",
+          "preset": "overcast",
+          "device": "synthetic-trace",
+          "sceneRevision": "courtyard-r3"
+        },
+        "visualPassed": true,
+        "stats": {
+          "medianMs": 16
+        }
+      },
+      {
+        "variant": "B",
+        "conditions": {
+          "viewport": [
+            1000,
+            700
+          ],
+          "drawingBuffer": [
+            1500,
+            1050
+          ],
+          "camera": "courtyard-fixed",
+          "preset": "overcast",
+          "device": "synthetic-trace",
+          "sceneRevision": "courtyard-r3"
+        },
+        "visualPassed": true,
+        "stats": {
+          "medianMs": 16
+        }
+      },
+      {
+        "variant": "A",
+        "conditions": {
+          "viewport": [
+            1000,
+            700
+          ],
+          "drawingBuffer": [
+            1500,
+            1050
+          ],
+          "camera": "courtyard-fixed",
+          "preset": "overcast",
+          "device": "synthetic-trace",
+          "sceneRevision": "courtyard-r3"
+        },
+        "visualPassed": true,
+        "stats": {
+          "medianMs": 20
+        }
+      }
+    ]
+  },
+  "profiles": [
+    {
+      "id": "orchard",
+      "jsUpdateMs": 14,
+      "submitMs": 2,
+      "gpuMs": 4,
+      "hotStack": "rebuildCollisionCandidates / allocateVectors",
+      "notes": "neutral materials and half-resolution gave no meaningful change"
+    },
+    {
+      "id": "gallery",
+      "jsUpdateMs": 1,
+      "submitMs": 1,
+      "gpuMs": 25,
+      "hotStack": "short JS callbacks",
+      "notes": "neutral material GPU=7ms; lower drawing buffer GPU=12ms; same geometry"
+    },
+    {
+      "id": "station",
+      "initialTurnFrameMs": 240,
+      "subsequentP95Ms": 16.8,
+      "traceEvents": [
+        "texture upload",
+        "shader compile"
+      ],
+      "notes": "only first exposure to new materials stalls"
+    }
+  ]
+}

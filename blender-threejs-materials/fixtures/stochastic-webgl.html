@@ -1,0 +1,67 @@
+<!doctype html><meta charset="utf-8"><title>Stochastic GLSL conformance fixture</title>
+<canvas id="canvas" width="32" height="32" style="width:256px;height:256px;image-rendering:pixelated"></canvas><pre id="result">Running…</pre>
+<script type="module">
+import {GLSL,PRESETS,sample} from '../scripts/stochastic.mjs';
+try {
+ const gl=document.querySelector('canvas').getContext('webgl2',{antialias:false,preserveDrawingBuffer:true});
+ if(!gl)throw new Error('WebGL2 unavailable');
+ const vertex='#version 300 es\nvoid main(){vec2 p=vec2(float((gl_VertexID<<1)&2),float(gl_VertexID&2));gl_Position=vec4(p*2.0-1.0,0,1);}';
+ const fragment=`#version 300 es
+ precision highp float;precision highp int;
+ uniform sampler2D colorMap;uniform sampler2D ormMap;uniform sampler2D normalMap;
+ uniform vec4 settings;uniform vec2 blend;uniform vec2 normalSigns;uniform int role;
+ out vec4 outputColor;
+ ${GLSL}
+ void main(){vec2 uv=-1.2+gl_FragCoord.xy/32.0*2.4;
+ SurfaceStochasticPatch p=surfaceStochasticPatch(uv,settings);
+ vec4 c=surfaceStochasticColor(colorMap,p,blend);
+ vec4 o=surfaceStochasticData(ormMap,p);
+ vec3 n=surfaceStochasticNormal(normalMap,p,normalSigns);
+ outputColor=vec4(role==0?c.rgb:(role==1?o.rgb:n*.5+.5),1.0);}`;
+ function shader(type,source){const s=gl.createShader(type);gl.shaderSource(s,source);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(s));return s;}
+ const program=gl.createProgram();gl.attachShader(program,shader(gl.VERTEX_SHADER,vertex));gl.attachShader(program,shader(gl.FRAGMENT_SHADER,fragment));gl.linkProgram(program);
+ if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(program));gl.useProgram(program);
+ const size=32,linear=v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4,srgb=v=>v<=.0031308?12.92*v:1.055*v**(1/2.4)-.055;
+ const values={};
+ for(const name of ['color','normal','orm']) {
+  const data=new Uint8Array(size*size*4);
+  for(let y=0;y<size;y++)for(let x=0;x<size;x++){
+   const u=(x+.5)/size*Math.PI*2,v=(y+.5)/size*Math.PI*2;
+   const dx=.06*Math.PI*2*Math.cos(u)*Math.cos(v),dy=-.06*Math.PI*2*Math.sin(u)*Math.sin(v),length=Math.hypot(dx,dy,1);
+   const rgb=name==='color'?[.38+.14*Math.sin(u),.34+.12*Math.cos(v),.28+.05*Math.cos(u+v)]:name==='orm'?[.75+.15*Math.cos(u+v),.7+.13*Math.sin(u),0]:[-dx/length*.5+.5,-dy/length*.5+.5,.5/length+.5];
+   for(let k=0;k<3;k++)data[(y*size+x)*4+k]=Math.round((name==='color'?srgb(rgb[k]):rgb[k])*255);
+   data[(y*size+x)*4+3]=255;
+  }values[name]=data;
+ }
+ const wrap=v=>(v%size+size)%size;
+ const textures=Object.fromEntries(Object.entries(values).map(([name,data])=>[name,([u,v])=>{
+  const x=(u-Math.floor(u))*size-.5,y=(v-Math.floor(v))*size-.5,ix=Math.floor(x),iy=Math.floor(y),a=x-ix,b=y-iy;
+  return [0,1,2].map(k=>{
+   const at=(px,py)=>{const value=data[(wrap(py)*size+wrap(px))*4+k]/255;return name==='color'?linear(value):value;};
+   return (at(ix,iy)*(1-a)+at(ix+1,iy)*a)*(1-b)+(at(ix,iy+1)*(1-a)+at(ix+1,iy+1)*a)*b;
+  });
+ }]));
+ Object.entries(values).forEach(([name,data],i)=>{
+  const t=gl.createTexture();gl.activeTexture(gl.TEXTURE0+i);gl.bindTexture(gl.TEXTURE_2D,t);
+  gl.texImage2D(gl.TEXTURE_2D,0,name==='color'?gl.SRGB8_ALPHA8:gl.RGBA8,size,size,0,gl.RGBA,gl.UNSIGNED_BYTE,data);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.REPEAT);
+  gl.uniform1i(gl.getUniformLocation(program,name+'Map'),i);
+ });
+ let maxError=0,cases=0;
+ for(const [name,preset] of Object.entries(PRESETS))for(const signs of [[-1,-1],[-1,1],[1,1]])for(const [role,label] of ['color','orm','normal'].entries()){
+  gl.uniform4fv(gl.getUniformLocation(program,'settings'),preset.settings);gl.uniform2fv(gl.getUniformLocation(program,'blend'),preset.blend);
+  gl.uniform2fv(gl.getUniformLocation(program,'normalSigns'),signs);gl.uniform1i(gl.getUniformLocation(program,'role'),role);gl.drawArrays(gl.TRIANGLES,0,3);
+  const pixels=new Uint8Array(32*32*4);gl.readPixels(0,0,32,32,gl.RGBA,gl.UNSIGNED_BYTE,pixels);
+  if(gl.getError()!==gl.NO_ERROR)throw new Error('WebGL error during '+name+'/'+label);
+  for(let y=0;y<32;y++)for(let x=0;x<32;x++){
+   const expected=sample([-1.2+(x+.5)/32*2.4,-1.2+(y+.5)/32*2.4],textures,preset,signs)[label];
+   for(let k=0;k<3;k++)maxError=Math.max(maxError,Math.abs(pixels[(y*32+x)*4+k]/255-expected[k]));
+  }cases++;
+ }
+ if(maxError>1.1/255)throw new Error('Numerical mismatch: '+maxError);
+ window.fixtureResult={passed:true,cases,maxError,output:'RGBA8 framebuffer',limits:'Spatial color/ORM and normals from an analytic height field, sRGB decoding, bilinear repeat sampling and 3 normal conventions; distant mip choice and Three shader-chunk integration remain outside this fixture.'};
+ document.querySelector('#result').textContent=JSON.stringify(window.fixtureResult,null,2);
+ gl.getExtension('WEBGL_lose_context')?.loseContext();
+} catch(error){window.fixtureResult={passed:false,error:String(error)};document.querySelector('#result').textContent=JSON.stringify(window.fixtureResult,null,2);}
+</script>

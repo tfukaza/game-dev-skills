@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "cases": 18,
+  "maxError": 0.0019630824386110135,
+  "output": "RGBA8 framebuffer",
+  "limits": "Spatial color/ORM and normals from an analytic height field, sRGB decoding, bilinear repeat sampling and 3 normal conventions; distant mip choice and Three shader-chunk integration remain outside this fixture."
+}

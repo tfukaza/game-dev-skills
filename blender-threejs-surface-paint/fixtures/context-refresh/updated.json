@@ -1,0 +1,50 @@
+{
+  "kind": "wall",
+  "seed": 41,
+  "worldMeters": [
+    8,
+    4
+  ],
+  "baseProfile": [
+    [
+      0,
+      0.53
+    ],
+    [
+      3,
+      0.93
+    ],
+    [
+      5,
+      1.1800000000000002
+    ],
+    [
+      8,
+      1.3800000000000001
+    ]
+  ],
+  "repairs": [
+    {
+      "center": [
+        5.4,
+        1.55
+      ],
+      "radius": [
+        0.6,
+        0.4
+      ],
+      "strength": 0.65
+    }
+  ],
+  "drains": [
+    {
+      "anchor": [
+        3.7,
+        2.4
+      ],
+      "radiusMeters": 0.09,
+      "lengthMeters": 1.4,
+      "strength": 0.65
+    }
+  ]
+}

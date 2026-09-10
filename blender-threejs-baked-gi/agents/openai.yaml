@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cycles to Three.js GI"
+  short_description: "Calibrate, bake, filter, and deliver scene lighting"
+  default_prompt: "Use $blender-threejs-baked-gi to complete the relevant Blender and Three.js workflow for this project."
