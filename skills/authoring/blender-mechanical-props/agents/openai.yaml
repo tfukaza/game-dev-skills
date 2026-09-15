@@ -1,0 +1,4 @@
+interface:
+  display_name: "Mechanical Props & Vehicles"
+  short_description: "Build coherent assemblies, hardware, and moving props"
+  default_prompt: "Use $blender-mechanical-props to model and inspect this prop's assembly structure, surfaces, and functional interfaces."

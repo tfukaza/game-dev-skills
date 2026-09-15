@@ -1,0 +1,4 @@
+interface:
+  display_name: "Blender UV Textures"
+  short_description: "Unwrap real meshes and verify fitted texture artwork"
+  default_prompt: "Use $blender-uv-textures to unwrap this Blender mesh, export and inspect its UV layout, and verify the applied texture."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Roller Coaster Cars"
+  short_description: "Resolve car modules, bogies, restraints, and fidelity"
+  default_prompt: "Use $roller-coaster-cars to establish this reference train's module topology and build a source-grounded, game-ready car asset."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Godot + Rust Acceptance"
+  short_description: "Verify Godot and Rust game behavior with evidence"
+  default_prompt: "Use $godot-rust-acceptance to design and verify a bounded acceptance run for this Godot and Rust game."
